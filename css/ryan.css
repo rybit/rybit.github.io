@@ -284,7 +284,7 @@ p {
   background-color: #f6f6f6;
   box-shadow: none;
   font-family: Raleway, sans-serif;
-  color: rgba(238, 233, 217, 0.6);
+  color: slategray;
   font-size: 13px;
   font-weight: 300;
 }
@@ -293,7 +293,7 @@ p {
   border-color: #008775;
   box-shadow: transparent 0px 0px 6px 0px;
   font-family: Arial, Helvetica, sans-serif;
-  color: #eee9d9;
+  color: darkslategray;
   font-weight: 300;
 }
 .form-field.question {

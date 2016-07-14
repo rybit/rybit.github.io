@@ -244,6 +244,7 @@ p {
   clear: none;
 }
 .portrait-image {
+  width: 30%;
   display: block;
   margin: 40px auto;
   border: 7px none black;

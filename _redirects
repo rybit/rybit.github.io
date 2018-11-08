@@ -1,2 +1,2 @@
 # this is for ngrok testing
-/test  http://761bc2d2.ngrok.io
+/test/*  http://761bc2d2.ngrok.io 200

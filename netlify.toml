@@ -1,0 +1,10 @@
+[settings]
+  id = "b08bc86b-7c9d-4207-affc-81db0e1558f2"
+
+[build]
+  publish = "site"
+  functions = "functions"
+  command = "make build"
+[build.environment]
+  GO_IMPORT_PATH = "github.com/rybit/rybit.github.io"
+

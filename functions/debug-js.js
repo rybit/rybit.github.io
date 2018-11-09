@@ -1,11 +1,10 @@
 
 exports.handler = function(event, context, callback) {
-    var res = "event: " + JSON.stringify(event)
-    res += "\ncontext: " + JSON.stringify(context)
-    res += "\n"
+    var res = {"event": event, "context": context}
+
 
     callback(null, {
     statusCode: 200,
-    body: res
+    body: JSON.stringify(res)
     });
 }

@@ -13,8 +13,8 @@ import (
 
 // this is just for debugging
 func handler(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	fmt.Printf("My request: %v", request)
-	fmt.Printf("My context: %v", ctx)
+	fmt.Printf("My request: %+v", request)
+	fmt.Printf("My context: %+v", ctx)
 
 	lc, ok := lambdacontext.FromContext(ctx)
 	if !ok {
@@ -43,19 +43,16 @@ func handler(ctx context.Context, request events.APIGatewayProxyRequest) (events
 	}{}
 
 	out.Headers = request.Headers
-	if lc.ClientContext.Env != nil {
-		out.ClientContext.Env = lc.ClientContext.Env
-	}
-	if lc.ClientContext.Custom != nil {
-		out.ClientContext.Custom = lc.ClientContext.Custom
-	}
-
+	out.ClientContext.Env = lc.ClientContext.Env
+	out.ClientContext.Custom = lc.ClientContext.Custom
 	out.ClientContext.ClientInfo.AppPackageName = lc.ClientContext.Client.AppPackageName
 	out.ClientContext.ClientInfo.AppTitle = lc.ClientContext.Client.AppTitle
 	out.ClientContext.ClientInfo.AppVersionCode = lc.ClientContext.Client.AppVersionCode
 	out.ClientContext.ClientInfo.InstallationID = lc.ClientContext.Client.InstallationID
 	out.AWSInfo.AwsRequestID = lc.AwsRequestID
 	out.AWSInfo.InvokedFunctionArn = lc.InvokedFunctionArn
+
+	fmt.Printf("Marshaling the output: %+v\n", out)
 	bs, err := json.Marshal(out)
 	if err != nil {
 		return events.APIGatewayProxyResponse{
@@ -63,7 +60,7 @@ func handler(ctx context.Context, request events.APIGatewayProxyRequest) (events
 			Body:       err.Error(),
 		}, nil
 	}
-
+	fmt.Println("It all seems good")
 	return events.APIGatewayProxyResponse{
 		StatusCode: http.StatusOK,
 		Body:       string(bs),

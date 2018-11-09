@@ -43,8 +43,13 @@ func handler(ctx context.Context, request events.APIGatewayProxyRequest) (events
 	}{}
 
 	out.Headers = request.Headers
-	out.ClientContext.Env = lc.ClientContext.Env
-	out.ClientContext.Custom = lc.ClientContext.Custom
+	if lc.ClientContext.Env != nil {
+		out.ClientContext.Env = lc.ClientContext.Env
+	}
+	if lc.ClientContext.Custom != nil {
+		out.ClientContext.Custom = lc.ClientContext.Custom
+	}
+
 	out.ClientContext.ClientInfo.AppPackageName = lc.ClientContext.Client.AppPackageName
 	out.ClientContext.ClientInfo.AppTitle = lc.ClientContext.Client.AppTitle
 	out.ClientContext.ClientInfo.AppVersionCode = lc.ClientContext.Client.AppVersionCode

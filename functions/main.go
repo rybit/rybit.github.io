@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -40,6 +41,7 @@ func handler(ctx context.Context, request events.APIGatewayProxyRequest) (events
 			AwsRequestID       string `json:"aws_request_id,omitempty"`
 			InvokedFunctionArn string `json:"invoked_function_arn,omitempty"`
 		} `json:"aws_info,omitempty"`
+		Netlify map[string]interface{} `json:"netlify,omitempty"`
 	}{}
 
 	out.Headers = request.Headers
@@ -51,6 +53,27 @@ func handler(ctx context.Context, request events.APIGatewayProxyRequest) (events
 	out.ClientContext.ClientInfo.InstallationID = lc.ClientContext.Client.InstallationID
 	out.AWSInfo.AwsRequestID = lc.AwsRequestID
 	out.AWSInfo.InvokedFunctionArn = lc.InvokedFunctionArn
+
+	// the netlify struct is encoded
+	nfstr, ok := lc.ClientContext.Custom["netlify"]
+	if ok {
+		fmt.Println("Found netlify context")
+		decoded, err := base64.StdEncoding.DecodeString(nfstr)
+		if err != nil {
+			return events.APIGatewayProxyResponse{
+				StatusCode: http.StatusBadRequest,
+				Body:       err.Error(),
+			}, nil
+		}
+		parsed := make(map[string]interface{})
+		if err := json.Unmarshal(decoded, &parsed); err != nil {
+			return events.APIGatewayProxyResponse{
+				StatusCode: http.StatusBadRequest,
+				Body:       err.Error(),
+			}, nil
+		}
+		out.Netlify = parsed
+	}
 
 	fmt.Printf("Marshaling the output: %+v\n", out)
 	bs, err := json.Marshal(out)

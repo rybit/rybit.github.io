@@ -2,7 +2,7 @@ exports.handler = function(event, context, callback) {
     var res = {"event": event, "context": context}
 
     var headers = {};
-    if (event.queryStringParameters["cache"]  == "true") {
+    if (event.queryStringParameters["cache"].includes("true")) {
       headers = {"X-Nf-Experiment": "builder_func"};
     }
 

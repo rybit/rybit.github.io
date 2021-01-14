@@ -8,3 +8,8 @@
 [build.environment]
   GO_IMPORT_PATH = "github.com/rybit/rybit.github.io"
 
+[[ headers ]]
+  for = "/no-cache"
+  [headers.values]
+    cache-control = "max-age=0,no-cache,no-store,must-revalidate"
+
